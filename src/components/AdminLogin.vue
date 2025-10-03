@@ -4,141 +4,187 @@
     <div class="background-image"></div>
     <div class="animated-overlay" :style="{ opacity: overlayOpacity }"></div>
     
-    <v-container class="d-flex align-center justify-center fill-height">
-      <div class="login-content">
-        <!-- Animated Header -->
-        <transition name="fade-slide-scale">
-          <div v-show="showContent" class="header-section">
-            <div class="logo-container">
-              <v-icon size="80" color="white" class="logo-icon">mdi-shield-crown</v-icon>
+    <div class="login-wrapper">
+      <!-- Left Section - Branding & Info -->
+      <transition name="slide-left">
+        <div v-show="showContent" class="left-section">
+          <div class="branding-content">
+            <!-- Animated Logo -->
+            <div class="logo-showcase">
+              <div class="logo-ring"></div>
+              <div class="logo-ring-2"></div>
+              <v-icon size="120" color="white" class="logo-icon-large">mdi-shield-crown</v-icon>
             </div>
-            <h1 class="welcome-title">Welcome Back</h1>
-            <p class="welcome-subtitle">SafeSpot Admin Panel</p>
+            
+            <!-- Main Heading -->
+            <h1 class="brand-title">SafeSpot</h1>
+            <h2 class="brand-subtitle">Admin Control Center</h2>
+            
+            <!-- Feature Cards -->
+            <div class="feature-cards">
+              <div class="feature-card" v-for="(feature, index) in features" :key="index" 
+                   :style="{ animationDelay: `${index * 0.1}s` }">
+                <div class="feature-icon-wrapper">
+                  <v-icon size="28" color="white">{{ feature.icon }}</v-icon>
+                </div>
+                <div class="feature-text">
+                  <h3>{{ feature.title }}</h3>
+                  <p>{{ feature.description }}</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Decorative Stats -->
+            <div class="stats-container">
+              <div class="stat-item" v-for="(stat, index) in stats" :key="index">
+                <div class="stat-number">{{ stat.number }}</div>
+                <div class="stat-label">{{ stat.label }}</div>
+              </div>
+            </div>
           </div>
-        </transition>
+          
+          <!-- Floating Particles -->
+          <div class="particle" v-for="i in 15" :key="i" 
+               :style="{ 
+                 left: `${Math.random() * 100}%`, 
+                 top: `${Math.random() * 100}%`,
+                 animationDelay: `${Math.random() * 5}s`,
+                 animationDuration: `${5 + Math.random() * 10}s`
+               }"></div>
+        </div>
+      </transition>
+      
+      <!-- Right Section - Login Form -->
+      <transition name="slide-right">
+        <div v-show="showContent" class="right-section">
+          <div class="form-container">
+            <!-- Header -->
+            <div class="form-header">
+              <div class="header-icon-wrapper">
+                <v-icon size="48" color="orange-darken-2">mdi-shield-lock</v-icon>
+              </div>
+              <h1 class="form-title">Welcome Back</h1>
+              <p class="form-subtitle">Sign in to access the admin dashboard</p>
+            </div>
 
-        <!-- Animated Form Card -->
-        <transition name="fade-slide-scale" mode="out-in">
-          <v-card 
-            v-show="showContent" 
-            class="login-card glass-effect"
-            elevation="24"
-          >
-            <v-card-text class="pa-8">
-              <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login">
-                <v-text-field
-                  v-model="email"
-                  label="Admin Email"
-                  type="email"
-                  :rules="[rules.required, rules.email]"
-                  prepend-inner-icon="mdi-email"
-                  variant="outlined"
-                  class="mb-4 custom-input"
-                  color="brown-darken-2"
-                  required
-                  :disabled="loading"
-                ></v-text-field>
-                
-                <v-text-field
-                  v-model="password"
-                  label="Password"
-                  :type="showPassword ? 'text' : 'password'"
-                  :rules="[rules.required, rules.minLength]"
-                  prepend-inner-icon="mdi-lock"
-                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  @click:append-inner="showPassword = !showPassword"
-                  variant="outlined"
-                  class="mb-4 custom-input"
-                  color="brown-darken-2"
-                  required
-                  :disabled="loading"
-                ></v-text-field>
+            <!-- Form Card -->
+            <v-card 
+              class="login-card"
+              elevation="0"
+            >
+              <v-card-text class="pa-8">
+                <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login">
+                  <v-text-field
+                    v-model="email"
+                    label="Admin Email"
+                    type="email"
+                    :rules="[rules.required, rules.email]"
+                    prepend-inner-icon="mdi-email"
+                    variant="outlined"
+                    class="mb-4 custom-input"
+                    color="orange-darken-2"
+                    required
+                    :disabled="loading"
+                  ></v-text-field>
+                  
+                  <v-text-field
+                    v-model="password"
+                    label="Password"
+                    :type="showPassword ? 'text' : 'password'"
+                    :rules="[rules.required, rules.minLength]"
+                    prepend-inner-icon="mdi-lock"
+                    :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append-inner="showPassword = !showPassword"
+                    variant="outlined"
+                    class="mb-4 custom-input"
+                    color="orange-darken-2"
+                    required
+                    :disabled="loading"
+                  ></v-text-field>
 
-                <!-- Admin Info Badge -->
-                <v-card 
-                  variant="tonal" 
-                  color="brown-lighten-5" 
-                  class="mb-4 info-badge"
-                >
-                  <v-card-text class="text-center py-2">
-                    <v-icon size="20" class="mr-1">mdi-information</v-icon>
-                    <span class="text-caption">Super Admin Access Required</span>
-                  </v-card-text>
-                </v-card>
+                  <!-- Admin Info Badge -->
+                  <v-card 
+                    variant="flat" 
+                    color="orange-lighten-5" 
+                    class="mb-4 info-badge"
+                  >
+                    <v-card-text class="text-center py-3">
+                      <v-icon size="20" class="mr-2" color="orange-darken-2">mdi-shield-star</v-icon>
+                      <span class="text-body-2 font-weight-medium">Super Admin Access Required</span>
+                    </v-card-text>
+                  </v-card>
 
-                <!-- Loading Message -->
-                <v-alert
-                  v-if="loading && !errorMessage && !successMessage"
-                  type="info"
-                  variant="tonal"
-                  class="mb-4"
-                >
-                  <div class="d-flex align-center">
-                    <v-progress-circular indeterminate size="20" class="mr-2"></v-progress-circular>
-                    Verifying admin privileges...
-                  </div>
-                </v-alert>
+                  <!-- Loading Message -->
+                  <v-alert
+                    v-if="loading && !errorMessage && !successMessage"
+                    type="info"
+                    variant="tonal"
+                    class="mb-4"
+                  >
+                    <div class="d-flex align-center">
+                      <v-progress-circular indeterminate size="20" class="mr-2"></v-progress-circular>
+                      Verifying admin privileges...
+                    </div>
+                  </v-alert>
 
-                <!-- Error Message -->
-                <v-alert
-                  v-if="errorMessage"
-                  type="error"
-                  variant="tonal"
-                  class="mb-4"
-                  closable
-                  @click:close="errorMessage = ''"
-                >
-                  <template v-slot:prepend>
-                    <v-icon>mdi-alert-circle</v-icon>
-                  </template>
-                  <div class="font-weight-bold">Access Denied</div>
-                  {{ errorMessage }}
-                </v-alert>
+                  <!-- Error Message -->
+                  <v-alert
+                    v-if="errorMessage"
+                    type="error"
+                    variant="tonal"
+                    class="mb-4"
+                    closable
+                    @click:close="errorMessage = ''"
+                  >
+                    <template v-slot:prepend>
+                      <v-icon>mdi-alert-circle</v-icon>
+                    </template>
+                    <div class="font-weight-bold">Access Denied</div>
+                    {{ errorMessage }}
+                  </v-alert>
 
-                <!-- Success Message -->
-                <v-alert
-                  v-if="successMessage"
-                  type="success"
-                  variant="tonal"
-                  class="mb-4"
-                >
-                  <template v-slot:prepend>
-                    <v-icon>mdi-check-circle</v-icon>
-                  </template>
-                  {{ successMessage }}
-                </v-alert>
+                  <!-- Success Message -->
+                  <v-alert
+                    v-if="successMessage"
+                    type="success"
+                    variant="tonal"
+                    class="mb-4"
+                  >
+                    <template v-slot:prepend>
+                      <v-icon>mdi-check-circle</v-icon>
+                    </template>
+                    {{ successMessage }}
+                  </v-alert>
 
-                <v-btn 
-                  :disabled="!valid || loading" 
-                  color="brown-darken-2" 
-                  size="x-large"
-                  block
-                  type="submit"
-                  :loading="loading"
-                  class="login-btn"
-                  elevation="8"
-                >
-                  <v-icon left class="mr-2">mdi-login</v-icon>
-                  Admin Login
-                </v-btn>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </transition>
+                  <v-btn 
+                    :disabled="!valid || loading" 
+                    color="orange-darken-2" 
+                    size="x-large"
+                    block
+                    type="submit"
+                    :loading="loading"
+                    class="login-btn"
+                    elevation="0"
+                  >
+                    <v-icon left class="mr-2">mdi-login</v-icon>
+                    Sign In
+                  </v-btn>
+                </v-form>
+              </v-card-text>
+            </v-card>
 
-        <!-- Animated Footer Text -->
-        <transition name="fade-slide">
-          <div v-show="showContent" class="footer-section">
-            <div class="signup-container glass-effect-light">
-              <span class="signup-text">Need assistance?</span>
-              <a href="#" class="signup-link" @click.prevent="handleSupport">
+            <!-- Footer -->
+            <div class="form-footer">
+              <span class="footer-text">Need assistance?</span>
+              <a href="#" class="footer-link" @click.prevent="handleSupport">
                 Contact Support
+                <v-icon size="16" class="ml-1">mdi-arrow-right</v-icon>
               </a>
             </div>
           </div>
-        </transition>
-      </div>
-    </v-container>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -158,6 +204,28 @@ export default {
       successMessage: '',
       showContent: false,
       overlayOpacity: 0.5,
+      features: [
+        {
+          icon: 'mdi-chart-line',
+          title: 'Real-time Analytics',
+          description: 'Monitor system performance and user activity'
+        },
+        {
+          icon: 'mdi-security',
+          title: 'Advanced Security',
+          description: 'Enterprise-grade protection and compliance'
+        },
+        {
+          icon: 'mdi-account-group',
+          title: 'User Management',
+          description: 'Complete control over user permissions'
+        }
+      ],
+      stats: [
+        { number: '99.9%', label: 'Uptime' },
+        { number: '256-bit', label: 'Encryption' },
+        { number: '24/7', label: 'Support' }
+      ],
       rules: {
         required: (value) => !!value || 'This field is required',
         email: (value) => /.+@.+\..+/.test(value) || 'Please enter a valid email address',
@@ -304,6 +372,7 @@ export default {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  background: #f5f5f5;
 }
 
 .background-image {
@@ -326,191 +395,442 @@ export default {
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3),
-    rgba(0, 0, 0, 0.5),
-    rgba(0, 0, 0, 0.7)
+    135deg,
+    rgba(30, 30, 30, 0.95),
+    rgba(50, 50, 50, 0.95),
+    rgba(20, 20, 20, 0.95)
   );
   z-index: 1;
   transition: opacity 0.5s ease;
 }
 
-.v-container {
+.login-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* LEFT SECTION */
+.left-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.branding-content {
+  max-width: 600px;
   position: relative;
   z-index: 2;
 }
 
-.login-content {
+.logo-showcase {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-ring,
+.logo-ring-2 {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: rotate 20s linear infinite;
+}
+
+.logo-ring {
+  width: 180px;
+  height: 180px;
+  border-top-color: rgba(255, 255, 255, 0.6);
+  border-right-color: rgba(255, 255, 255, 0.6);
+}
+
+.logo-ring-2 {
+  width: 220px;
+  height: 220px;
+  border-bottom-color: rgba(255, 255, 255, 0.4);
+  border-left-color: rgba(255, 255, 255, 0.4);
+  animation-direction: reverse;
+  animation-duration: 15s;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.logo-icon-large {
+  position: relative;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.brand-title {
+  font-size: 72px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 8px;
+  text-align: center;
+  letter-spacing: -2px;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.brand-subtitle {
+  font-size: 24px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin-bottom: 60px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.feature-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.feature-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  animation: slideInLeft 0.8s ease-out backwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(10px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.feature-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feature-text h3 {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.feature-text p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  margin: 0;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 30px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Floating Particles */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: float-particle 10s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(50px);
+    opacity: 0;
+  }
+}
+
+/* RIGHT SECTION */
+.right-section {
+  flex: 0 0 550px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
   width: 100%;
   max-width: 450px;
 }
 
-.header-section {
+.form-header {
   text-align: center;
   margin-bottom: 40px;
 }
 
-.logo-container {
-  margin-bottom: 20px;
+.header-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.logo-icon {
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-.welcome-title {
-  font-size: 48px;
+.form-title {
+  font-size: 32px;
   font-weight: 700;
-  color: white;
+  color: #212121;
   margin-bottom: 8px;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
-.welcome-subtitle {
-  font-size: 20px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+.form-subtitle {
+  font-size: 15px;
+  color: #757575;
+  margin: 0;
 }
 
 .login-card {
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.15) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 24px !important;
-  overflow: hidden;
-}
-
-.glass-effect {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  background: white !important;
+  border-radius: 0 !important;
+  margin-bottom: 24px;
 }
 
 .custom-input :deep(.v-field) {
-  background: rgba(255, 255, 255, 0.9);
   border-radius: 12px;
+  font-size: 15px;
 }
 
 .custom-input :deep(.v-field--focused) {
-  background: white;
+  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
 }
 
 .info-badge {
-  backdrop-filter: blur(10px);
   border-radius: 12px !important;
+  border: 1px solid #ffe0b2;
 }
 
 .login-btn {
   text-transform: none !important;
-  font-size: 18px !important;
+  font-size: 16px !important;
   font-weight: 600 !important;
   letter-spacing: 0.5px !important;
   border-radius: 12px !important;
   padding: 28px 0 !important;
-  background: linear-gradient(135deg, #795548 0%, #5d4037 100%) !important;
+  transition: all 0.3s ease !important;
 }
 
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 8px 24px rgba(255, 152, 0, 0.4) !important;
 }
 
-.footer-section {
-  margin-top: 30px;
+.form-footer {
   text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
 }
 
-.signup-container {
+.footer-text {
+  color: #757575;
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.footer-link {
+  color: #795548;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 16px 24px;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 25px;
-}
-
-.glass-effect-light {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-.signup-text {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.signup-link {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 4px 12px;
-  background: linear-gradient(135deg, #8d6e63 0%, #6d4c41 100%);
-  border-radius: 8px;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease;
 }
 
-.signup-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+.footer-link:hover {
+  color: #5d4037;
+  gap: 4px;
 }
 
 /* Animations */
-.fade-slide-scale-enter-active,
-.fade-slide-scale-leave-active {
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
   transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.fade-slide-scale-enter-from {
+.slide-left-enter-from {
   opacity: 0;
-  transform: translateY(30px) scale(0.8);
+  transform: translateX(-100px);
 }
 
-.fade-slide-scale-leave-to {
+.slide-left-leave-to {
   opacity: 0;
-  transform: translateY(-30px) scale(0.95);
+  transform: translateX(-50px);
 }
 
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.6s ease;
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(100px);
 }
 
-.fade-slide-enter-from {
+.slide-right-leave-to {
   opacity: 0;
-  transform: translateY(20px);
-}
-
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
+  transform: translateX(50px);
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-  .welcome-title {
-    font-size: 36px;
+@media (max-width: 1200px) {
+  .login-wrapper {
+    flex-direction: column;
   }
   
-  .welcome-subtitle {
+  .left-section {
+    flex: 0 0 auto;
+    min-height: 50vh;
+    padding: 40px 30px;
+  }
+  
+  .right-section {
+    flex: 0 0 auto;
+    padding: 40px 30px;
+    box-shadow: none;
+  }
+  
+  .brand-title {
+    font-size: 48px;
+  }
+  
+  .brand-subtitle {
     font-size: 18px;
   }
   
-  .login-card {
-    margin: 0 16px;
+  .feature-cards {
+    margin-bottom: 30px;
+  }
+  
+  .logo-showcase {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 30px;
+  }
+  
+  .logo-ring {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .logo-ring-2 {
+    width: 170px;
+    height: 170px;
+  }
+  
+  .logo-icon-large {
+    font-size: 90px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .left-section,
+  .right-section {
+    padding: 30px 20px;
+  }
+  
+  .brand-title {
+    font-size: 36px;
+  }
+  
+  .brand-subtitle {
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .feature-card {
+    padding: 18px;
+  }
+  
+  .stats-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-title {
+    font-size: 28px;
   }
 }
 </style>
