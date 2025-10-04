@@ -1,8 +1,15 @@
 <template>
   <div class="login-container">
-    <!-- Background Image with Overlay -->
-    <div class="background-image"></div>
-    <div class="animated-overlay" :style="{ opacity: overlayOpacity }"></div>
+    <!-- Animated Background -->
+    <div class="dashboard-background">
+      <div class="background-gradient"></div>
+      <div class="grid-overlay"></div>
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
     
     <div class="login-wrapper">
       <!-- Left Section - Branding & Info -->
@@ -13,7 +20,7 @@
             <div class="logo-showcase">
               <div class="logo-ring"></div>
               <div class="logo-ring-2"></div>
-              <v-icon size="120" color="white" class="logo-icon-large">mdi-shield-crown</v-icon>
+              <v-icon size="120" color="#FF6B35" class="logo-icon-large">mdi-shield-crown</v-icon>
             </div>
             
             <!-- Main Heading -->
@@ -25,7 +32,7 @@
               <div class="feature-card" v-for="(feature, index) in features" :key="index" 
                    :style="{ animationDelay: `${index * 0.1}s` }">
                 <div class="feature-icon-wrapper">
-                  <v-icon size="28" color="white">{{ feature.icon }}</v-icon>
+                  <v-icon size="28" color="#FF6B35">{{ feature.icon }}</v-icon>
                 </div>
                 <div class="feature-text">
                   <h3>{{ feature.title }}</h3>
@@ -42,15 +49,6 @@
               </div>
             </div>
           </div>
-          
-          <!-- Floating Particles -->
-          <div class="particle" v-for="i in 15" :key="i" 
-               :style="{ 
-                 left: `${Math.random() * 100}%`, 
-                 top: `${Math.random() * 100}%`,
-                 animationDelay: `${Math.random() * 5}s`,
-                 animationDuration: `${5 + Math.random() * 10}s`
-               }"></div>
         </div>
       </transition>
       
@@ -61,117 +59,90 @@
             <!-- Header -->
             <div class="form-header">
               <div class="header-icon-wrapper">
-                <v-icon size="48" color="orange-darken-2">mdi-shield-lock</v-icon>
+                <v-icon size="48" color="#FF6B35">mdi-shield-lock</v-icon>
               </div>
               <h1 class="form-title">Welcome Back</h1>
               <p class="form-subtitle">Sign in to access the admin dashboard</p>
             </div>
 
             <!-- Form Card -->
-            <v-card 
-              class="login-card"
-              elevation="0"
-            >
-              <v-card-text class="pa-8">
-                <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login">
-                  <v-text-field
-                    v-model="email"
-                    label="Admin Email"
-                    type="email"
-                    :rules="[rules.required, rules.email]"
-                    prepend-inner-icon="mdi-email"
-                    variant="outlined"
-                    class="mb-4 custom-input"
-                    color="orange-darken-2"
-                    required
-                    :disabled="loading"
-                  ></v-text-field>
-                  
-                  <v-text-field
-                    v-model="password"
-                    label="Password"
-                    :type="showPassword ? 'text' : 'password'"
-                    :rules="[rules.required, rules.minLength]"
-                    prepend-inner-icon="mdi-lock"
-                    :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:append-inner="showPassword = !showPassword"
-                    variant="outlined"
-                    class="mb-4 custom-input"
-                    color="orange-darken-2"
-                    required
-                    :disabled="loading"
-                  ></v-text-field>
+            <div class="login-card">
+              <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login">
+                <v-text-field
+                  v-model="email"
+                  label="Admin Email"
+                  type="email"
+                  :rules="[rules.required, rules.email]"
+                  prepend-inner-icon="mdi-email"
+                  variant="outlined"
+                  class="mb-4 custom-input"
+                  color="#FF6B35"
+                  required
+                  :disabled="loading"
+                ></v-text-field>
+                
+                <v-text-field
+                  v-model="password"
+                  label="Password"
+                  :type="showPassword ? 'text' : 'password'"
+                  :rules="[rules.required, rules.minLength]"
+                  prepend-inner-icon="mdi-lock"
+                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append-inner="showPassword = !showPassword"
+                  variant="outlined"
+                  class="mb-4 custom-input"
+                  color="#FF6B35"
+                  required
+                  :disabled="loading"
+                ></v-text-field>
 
-                  <!-- Admin Info Badge -->
-                  <v-card 
-                    variant="flat" 
-                    color="orange-lighten-5" 
-                    class="mb-4 info-badge"
-                  >
-                    <v-card-text class="text-center py-3">
-                      <v-icon size="20" class="mr-2" color="orange-darken-2">mdi-shield-star</v-icon>
-                      <span class="text-body-2 font-weight-medium">Super Admin Access Required</span>
-                    </v-card-text>
-                  </v-card>
+                <!-- Admin Info Badge -->
+                <div class="info-badge mb-4">
+                  <v-icon size="20" class="mr-2" color="#FF6B35">mdi-shield-star</v-icon>
+                  <span class="badge-text">Super Admin Access Required</span>
+                </div>
 
-                  <!-- Loading Message -->
-                  <v-alert
-                    v-if="loading && !errorMessage && !successMessage"
-                    type="info"
-                    variant="tonal"
-                    class="mb-4"
-                  >
-                    <div class="d-flex align-center">
-                      <v-progress-circular indeterminate size="20" class="mr-2"></v-progress-circular>
-                      Verifying admin privileges...
+                <!-- Loading Message -->
+                <div v-if="loading && !errorMessage && !successMessage" class="alert-message info-message mb-4">
+                  <v-progress-circular indeterminate size="20" color="#FF6B35" class="mr-2"></v-progress-circular>
+                  <span>Verifying admin privileges...</span>
+                </div>
+
+                <!-- Error Message -->
+                <div v-if="errorMessage" class="alert-message error-message mb-4">
+                  <div class="alert-content">
+                    <div class="alert-header">
+                      <v-icon color="#f44336" size="20">mdi-alert-circle</v-icon>
+                      <span class="alert-title">Access Denied</span>
+                      <v-btn icon size="x-small" variant="text" @click="errorMessage = ''">
+                        <v-icon size="16" color="#999">mdi-close</v-icon>
+                      </v-btn>
                     </div>
-                  </v-alert>
+                    <div class="alert-text">{{ errorMessage }}</div>
+                  </div>
+                </div>
 
-                  <!-- Error Message -->
-                  <v-alert
-                    v-if="errorMessage"
-                    type="error"
-                    variant="tonal"
-                    class="mb-4"
-                    closable
-                    @click:close="errorMessage = ''"
-                  >
-                    <template v-slot:prepend>
-                      <v-icon>mdi-alert-circle</v-icon>
-                    </template>
-                    <div class="font-weight-bold">Access Denied</div>
-                    {{ errorMessage }}
-                  </v-alert>
+                <!-- Success Message -->
+                <div v-if="successMessage" class="alert-message success-message mb-4">
+                  <v-icon color="#4CAF50" size="20" class="mr-2">mdi-check-circle</v-icon>
+                  <span>{{ successMessage }}</span>
+                </div>
 
-                  <!-- Success Message -->
-                  <v-alert
-                    v-if="successMessage"
-                    type="success"
-                    variant="tonal"
-                    class="mb-4"
-                  >
-                    <template v-slot:prepend>
-                      <v-icon>mdi-check-circle</v-icon>
-                    </template>
-                    {{ successMessage }}
-                  </v-alert>
-
-                  <v-btn 
-                    :disabled="!valid || loading" 
-                    color="orange-darken-2" 
-                    size="x-large"
-                    block
-                    type="submit"
-                    :loading="loading"
-                    class="login-btn"
-                    elevation="0"
-                  >
-                    <v-icon left class="mr-2">mdi-login</v-icon>
-                    Sign In
-                  </v-btn>
-                </v-form>
-              </v-card-text>
-            </v-card>
+                <v-btn 
+                  :disabled="!valid || loading" 
+                  color="#FF6B35" 
+                  size="x-large"
+                  block
+                  type="submit"
+                  :loading="loading"
+                  class="login-btn"
+                  elevation="0"
+                >
+                  <v-icon left class="mr-2">mdi-login</v-icon>
+                  Sign In
+                </v-btn>
+              </v-form>
+            </div>
 
             <!-- Footer -->
             <div class="form-footer">
@@ -203,7 +174,6 @@ export default {
       errorMessage: '',
       successMessage: '',
       showContent: false,
-      overlayOpacity: 0.5,
       features: [
         {
           icon: 'mdi-chart-line',
@@ -234,24 +204,12 @@ export default {
     }
   },
   async mounted() {
-    // Check if user is already logged in
     await this.checkExistingSession()
-
-    // Start entrance animations
     setTimeout(() => {
       this.showContent = true
     }, 200)
-
-    // Animate background overlay
-    this.animateOverlay()
   },
   methods: {
-    animateOverlay() {
-      setInterval(() => {
-        this.overlayOpacity = 0.5 + Math.sin(Date.now() / 3000) * 0.1
-      }, 50)
-    },
-    
     async checkExistingSession() {
       try {
         const { data: { session } } = await supabase.auth.getSession()
@@ -259,12 +217,10 @@ export default {
           const { data: { user } } = await supabase.auth.getUser()
           
           if (user) {
-            // Check if current user is super admin
             const isAdmin = await this.checkSuperAdminStatus(user.id)
             if (isAdmin) {
               this.$router.push('/admin')
             } else {
-              // Sign out non-admin user
               await supabase.auth.signOut()
             }
           }
@@ -318,23 +274,19 @@ export default {
 
         console.log('Login successful, checking admin privileges...')
         
-        // Check if user is super admin
         const isAdmin = await this.checkSuperAdminStatus(data.user.id)
         
         if (isAdmin) {
           this.successMessage = 'Super admin access granted! Redirecting...'
           
-          // Exit animation
           setTimeout(() => {
             this.showContent = false
           }, 1000)
           
-          // Navigate after animation
           setTimeout(() => {
             this.$router.push('/admin')
           }, 1500)
         } else {
-          // Sign out non-admin user immediately
           await supabase.auth.signOut()
           this.errorMessage = 'Access denied. Your account does not have super admin privileges.'
         }
@@ -360,7 +312,6 @@ export default {
     },
     
     handleSupport() {
-      // Implement support contact functionality
       console.log('Contact support clicked')
     }
   }
@@ -372,36 +323,103 @@ export default {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background: #f5f5f5;
 }
 
-.background-image {
-  position: absolute;
+/* Background */
+.dashboard-background {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/assets/bg2_icon.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   z-index: 0;
+  background: #0a0a0a;
+  overflow: hidden;
 }
 
-.animated-overlay {
+.background-gradient {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    135deg,
-    rgba(30, 30, 30, 0.95),
-    rgba(50, 50, 50, 0.95),
-    rgba(20, 20, 20, 0.95)
-  );
-  z-index: 1;
-  transition: opacity 0.5s ease;
+  background: radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(255, 152, 0, 0.1) 0%, transparent 50%);
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 107, 53, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 107, 53, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+.floating-shapes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.05;
+  animation: float 20s ease-in-out infinite;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  background: #FF6B35;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  background: #FF9800;
+  top: 60%;
+  right: 15%;
+  animation-delay: 5s;
+}
+
+.shape-3 {
+  width: 250px;
+  height: 250px;
+  background: #FF6B35;
+  bottom: 10%;
+  left: 50%;
+  animation-delay: 10s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
 }
 
 .login-wrapper {
@@ -441,7 +459,7 @@ export default {
 .logo-ring,
 .logo-ring-2 {
   position: absolute;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 107, 53, 0.2);
   border-radius: 50%;
   animation: rotate 20s linear infinite;
 }
@@ -449,15 +467,15 @@ export default {
 .logo-ring {
   width: 180px;
   height: 180px;
-  border-top-color: rgba(255, 255, 255, 0.6);
-  border-right-color: rgba(255, 255, 255, 0.6);
+  border-top-color: rgba(255, 107, 53, 0.6);
+  border-right-color: rgba(255, 107, 53, 0.6);
 }
 
 .logo-ring-2 {
   width: 220px;
   height: 220px;
-  border-bottom-color: rgba(255, 255, 255, 0.4);
-  border-left-color: rgba(255, 255, 255, 0.4);
+  border-bottom-color: rgba(255, 152, 0, 0.4);
+  border-left-color: rgba(255, 152, 0, 0.4);
   animation-direction: reverse;
   animation-duration: 15s;
 }
@@ -469,11 +487,11 @@ export default {
 
 .logo-icon-large {
   position: relative;
-  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
-  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 8px 24px rgba(255, 107, 53, 0.4));
+  animation: floatLogo 3s ease-in-out infinite;
 }
 
-@keyframes float {
+@keyframes floatLogo {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
 }
@@ -485,7 +503,7 @@ export default {
   margin-bottom: 8px;
   text-align: center;
   letter-spacing: -2px;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .brand-subtitle {
@@ -496,7 +514,7 @@ export default {
   margin-bottom: 60px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .feature-cards {
@@ -511,9 +529,9 @@ export default {
   align-items: center;
   gap: 20px;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(20, 20, 20, 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 107, 53, 0.2);
   border-radius: 16px;
   transition: all 0.3s ease;
   animation: slideInLeft 0.8s ease-out backwards;
@@ -531,15 +549,16 @@ export default {
 }
 
 .feature-card:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(20, 20, 20, 0.8);
   transform: translateX(10px);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 107, 53, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .feature-icon-wrapper {
   width: 56px;
   height: 56px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 107, 53, 0.15);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -555,7 +574,7 @@ export default {
 }
 
 .feature-text p {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   margin: 0;
 }
@@ -565,9 +584,9 @@ export default {
   justify-content: space-around;
   gap: 30px;
   padding: 30px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(20, 20, 20, 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.2);
   border-radius: 16px;
 }
 
@@ -578,7 +597,7 @@ export default {
 .stat-number {
   font-size: 32px;
   font-weight: 700;
-  color: white;
+  color: #FF6B35;
   margin-bottom: 4px;
 }
 
@@ -589,43 +608,16 @@ export default {
   letter-spacing: 1px;
 }
 
-/* Floating Particles */
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  animation: float-particle 10s infinite ease-in-out;
-  pointer-events: none;
-}
-
-@keyframes float-particle {
-  0%, 100% {
-    transform: translateY(0) translateX(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(50px);
-    opacity: 0;
-  }
-}
-
 /* RIGHT SECTION */
 .right-section {
   flex: 0 0 550px;
-  background: white;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 60px;
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(255, 107, 53, 0.1);
 }
 
 .form-container {
@@ -641,47 +633,125 @@ export default {
 .header-icon-wrapper {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+  background: rgba(255, 107, 53, 0.15);
+  border: 2px solid rgba(255, 107, 53, 0.3);
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.2);
 }
 
 .form-title {
   font-size: 32px;
   font-weight: 700;
-  color: #212121;
+  color: #fff;
   margin-bottom: 8px;
   letter-spacing: -0.5px;
 }
 
 .form-subtitle {
   font-size: 15px;
-  color: #757575;
+  color: #999;
   margin: 0;
 }
 
 .login-card {
-  background: white !important;
-  border-radius: 0 !important;
   margin-bottom: 24px;
 }
 
 .custom-input :deep(.v-field) {
   border-radius: 12px;
   font-size: 15px;
+  background: rgba(20, 20, 20, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .custom-input :deep(.v-field--focused) {
-  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+  border-color: #FF6B35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.custom-input :deep(.v-field__input) {
+  color: #fff;
+}
+
+.custom-input :deep(.v-label) {
+  color: #999;
+}
+
+.custom-input :deep(.v-field__prepend-inner .v-icon) {
+  color: #666;
+}
+
+.custom-input :deep(.v-field__append-inner .v-icon) {
+  color: #666;
 }
 
 .info-badge {
-  border-radius: 12px !important;
-  border: 1px solid #ffe0b2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 12px;
+}
+
+.badge-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FF6B35;
+}
+
+.alert-message {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.info-message {
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  color: #2196F3;
+}
+
+.error-message {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.error-message .alert-content {
+  width: 100%;
+}
+
+.error-message .alert-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.error-message .alert-title {
+  flex: 1;
+  font-weight: 600;
+  color: #f44336;
+  font-size: 14px;
+}
+
+.error-message .alert-text {
+  color: #ff8a80;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.success-message {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
 }
 
 .login-btn {
@@ -696,23 +766,23 @@ export default {
 
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 152, 0, 0.4) !important;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4) !important;
 }
 
 .form-footer {
   text-align: center;
   padding-top: 24px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-text {
-  color: #757575;
+  color: #999;
   font-size: 14px;
   margin-right: 8px;
 }
 
 .footer-link {
-  color: #795548;
+  color: #FF6B35;
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -722,7 +792,7 @@ export default {
 }
 
 .footer-link:hover {
-  color: #5d4037;
+  color: #FF9800;
   gap: 4px;
 }
 
@@ -769,7 +839,8 @@ export default {
   .right-section {
     flex: 0 0 auto;
     padding: 40px 30px;
-    box-shadow: none;
+    border-left: none;
+    border-top: 1px solid rgba(255, 107, 53, 0.1);
   }
   
   .brand-title {
