@@ -410,38 +410,39 @@
     </v-main>
 
     <!-- Logout Confirmation Dialog -->
-    <v-dialog v-model="logoutDialog" max-width="480">
-      <div class="modern-dialog">
-        <div class="dialog-header">
-          <div class="dialog-icon-wrapper">
-            <v-icon color="#FF6B35" size="32">mdi-logout-variant</v-icon>
+    <v-dialog v-model="logoutDialog" max-width="400">
+      <v-card class="modern-dialog">
+        <v-card-text class="dialog-content">
+          <div class="dialog-header">
+            <div class="dialog-icon-wrapper">
+              <v-icon color="#FF6B35" size="32">mdi-logout-variant</v-icon>
+            </div>
+            <h3 class="dialog-title">Confirm Logout</h3>
+            <p class="dialog-subtitle">Are you sure you want to sign out of the admin panel?</p>
           </div>
-          <h3 class="dialog-title">Confirm Logout</h3>
-          <p class="dialog-subtitle">Are you sure you want to sign out of the admin panel?</p>
-        </div>
-        <div class="dialog-actions">
-          <v-btn 
-            variant="outlined"
-            @click="logoutDialog = false"
-            size="large"
-            class="cancel-btn"
-            block
-          >
-            Cancel
-          </v-btn>
-          <v-btn 
-            color="#FF6B35"
-            variant="flat"
-            @click="confirmLogout"
-            :loading="loading"
-            size="large"
-            class="confirm-btn"
-            block
-          >
-            Sign Out
-          </v-btn>
-        </div>
-      </div>
+          <div class="dialog-actions">
+            <v-btn 
+              variant="tonal"
+              @click="logoutDialog = false"
+              class="cancel-btn"
+              :width="150"
+              color="grey-darken-3"
+            >
+              Cancel
+            </v-btn>
+            <v-btn 
+              color="#FF6B35"
+              variant="flat"
+              @click="confirmLogout"
+              :loading="loading"
+              class="confirm-btn"
+              :width="150"
+            >
+              Sign Out
+            </v-btn>
+          </div>
+        </v-card-text>
+      </v-card>
     </v-dialog>
 
     <!-- Snackbar -->
@@ -1713,11 +1714,13 @@ export default {
 
 /* Dialog */
 .modern-dialog {
-  background: rgba(20, 20, 20, 0.98);
-  border: 1px solid rgba(255, 107, 53, 0.2);
-  border-radius: 24px;
-  padding: 40px;
-  backdrop-filter: blur(20px);
+  width: 100% !important;
+  max-width: 400px !important;
+}
+
+.dialog-content {
+  padding: 32px !important;
+  width: 100% !important;
 }
 
 .dialog-header {
@@ -1734,7 +1737,7 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
 }
 
 .dialog-title {
@@ -1752,33 +1755,17 @@ export default {
 
 .dialog-actions {
   display: flex;
-  gap: 12px;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
 }
 
-.cancel-btn {
-  border-radius: 12px !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  color: #fff !important;
-  text-transform: none !important;
-  font-weight: 600 !important;
-  transition: all 0.3s ease !important;
-}
-
-.cancel-btn:hover {
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-}
-
-.confirm-btn {
+.cancel-btn, .confirm-btn {
+  height: 44px !important;
   border-radius: 12px !important;
   text-transform: none !important;
-  font-weight: 600 !important;
-  transition: all 0.3s ease !important;
-}
-
-.confirm-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4) !important;
+  font-weight: 600 !important;  
+  font-size: 14px !important;
 }
 
 /* Snackbar */
