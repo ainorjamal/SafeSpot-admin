@@ -1,7 +1,7 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import AdminLogin from '@/components/AdminLogin.vue'
-import AdminDashboard from '@/components/AdminDashboard.vue'
+import AdminDashboard from '@/views/AdminDashboard.vue'  // Updated path
 import { supabase } from '@/plugins/supabase'
 
 // Define routes
