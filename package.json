@@ -12,6 +12,8 @@
     "@mdi/font": "5.9.55",
     "@supabase/supabase-js": "^2.58.0",
     "core-js": "^3.8.3",
+    "leaflet": "^1.9.4",
+    "mapbox-gl": "^3.16.0",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-router": "^4.5.1",

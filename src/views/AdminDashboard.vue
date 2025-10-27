@@ -19,7 +19,8 @@
     />
 
     <v-main class="main-content">
-      <v-container fluid class="content-container">
+      <!-- Dashboard Content (activeMenu === 'dashboard') -->
+      <v-container v-if="activeMenu === 'dashboard'" fluid class="content-container">
         <div class="breadcrumb-section mb-6">
           <v-breadcrumbs :items="breadcrumbs" class="custom-breadcrumb pa-0">
             <template v-slot:divider>
@@ -57,6 +58,97 @@
             <SystemInfoCard v-show="showContent" />
           </v-col>
         </v-row>
+      </v-container>
+
+      <!-- Safety Map Content (activeMenu === 'map') -->
+      <SafetyMap v-if="activeMenu === 'map'" />
+
+      <!-- User Management Content (activeMenu === 'users') -->
+      <v-container v-if="activeMenu === 'users'" fluid class="content-container">
+        <div class="breadcrumb-section mb-6">
+          <v-breadcrumbs :items="usersBreadcrumbs" class="custom-breadcrumb pa-0">
+            <template v-slot:divider>
+              <v-icon size="16" color="#666">mdi-chevron-right</v-icon>
+            </template>
+          </v-breadcrumbs>
+        </div>
+        <div class="welcome-header">
+          <div class="welcome-content">
+            <div class="welcome-badge">
+              <v-icon size="32" color="#FF6B35">mdi-account-multiple</v-icon>
+            </div>
+            <div class="welcome-text-content">
+              <h1 class="welcome-title">User Management</h1>
+              <p class="welcome-subtitle">Manage all users and their permissions</p>
+            </div>
+          </div>
+        </div>
+      </v-container>
+
+      <!-- Analytics Content (activeMenu === 'analytics') -->
+      <v-container v-if="activeMenu === 'analytics'" fluid class="content-container">
+        <div class="breadcrumb-section mb-6">
+          <v-breadcrumbs :items="analyticsBreadcrumbs" class="custom-breadcrumb pa-0">
+            <template v-slot:divider>
+              <v-icon size="16" color="#666">mdi-chevron-right</v-icon>
+            </template>
+          </v-breadcrumbs>
+        </div>
+        <div class="welcome-header">
+          <div class="welcome-content">
+            <div class="welcome-badge">
+              <v-icon size="32" color="#FF6B35">mdi-chart-line</v-icon>
+            </div>
+            <div class="welcome-text-content">
+              <h1 class="welcome-title">Analytics</h1>
+              <p class="welcome-subtitle">View detailed analytics and insights</p>
+            </div>
+          </div>
+        </div>
+      </v-container>
+
+      <!-- Reports Content (activeMenu === 'reports') -->
+      <v-container v-if="activeMenu === 'reports'" fluid class="content-container">
+        <div class="breadcrumb-section mb-6">
+          <v-breadcrumbs :items="reportsBreadcrumbs" class="custom-breadcrumb pa-0">
+            <template v-slot:divider>
+              <v-icon size="16" color="#666">mdi-chevron-right</v-icon>
+            </template>
+          </v-breadcrumbs>
+        </div>
+        <div class="welcome-header">
+          <div class="welcome-content">
+            <div class="welcome-badge">
+              <v-icon size="32" color="#FF6B35">mdi-file-chart</v-icon>
+            </div>
+            <div class="welcome-text-content">
+              <h1 class="welcome-title">Reports</h1>
+              <p class="welcome-subtitle">Generate and view system reports</p>
+            </div>
+          </div>
+        </div>
+      </v-container>
+
+      <!-- Settings Content (activeMenu === 'settings') -->
+      <v-container v-if="activeMenu === 'settings'" fluid class="content-container">
+        <div class="breadcrumb-section mb-6">
+          <v-breadcrumbs :items="settingsBreadcrumbs" class="custom-breadcrumb pa-0">
+            <template v-slot:divider>
+              <v-icon size="16" color="#666">mdi-chevron-right</v-icon>
+            </template>
+          </v-breadcrumbs>
+        </div>
+        <div class="welcome-header">
+          <div class="welcome-content">
+            <div class="welcome-badge">
+              <v-icon size="32" color="#FF6B35">mdi-cog</v-icon>
+            </div>
+            <div class="welcome-text-content">
+              <h1 class="welcome-title">Settings</h1>
+              <p class="welcome-subtitle">Configure system settings and preferences</p>
+            </div>
+          </div>
+        </div>
       </v-container>
     </v-main>
 
@@ -99,6 +191,7 @@ import QuickActionsPanel from '@/components/dashboard/QuickActionsPanel.vue'
 import ActivityFeed from '@/components/dashboard/ActivityFeed.vue'
 import SystemInfoCard from '@/components/dashboard/SystemInfoCard.vue'
 import LogoutDialog from '@/components/dashboard/LogoutDialog.vue'
+import SafetyMap from '@/components/dashboard/SafetyMap.vue'
 
 import { useDashboardData } from '@/composables/useDashboardData'
 import { useUserStats } from '@/composables/useUserStats'
@@ -116,7 +209,8 @@ export default {
     QuickActionsPanel,
     ActivityFeed,
     SystemInfoCard,
-    LogoutDialog
+    LogoutDialog,
+    SafetyMap
   },
   setup() {
     const {
@@ -221,7 +315,39 @@ export default {
           statusClass: 'online',
           response: 67
         }
+      ],
+      usersBreadcrumbs: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'User Management', disabled: true }
+      ],
+      analyticsBreadcrumbs: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'Analytics', disabled: true }
+      ],
+      reportsBreadcrumbs: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'Reports', disabled: true }
+      ],
+      settingsBreadcrumbs: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'Settings', disabled: true }
       ]
+    }
+  },
+  computed: {
+    currentBreadcrumbs() {
+      const breadcrumbMap = {
+        dashboard: this.breadcrumbs,
+        map: [
+          { title: 'Dashboard', disabled: false },
+          { title: 'Safety Map', disabled: true }
+        ],
+        users: this.usersBreadcrumbs,
+        analytics: this.analyticsBreadcrumbs,
+        reports: this.reportsBreadcrumbs,
+        settings: this.settingsBreadcrumbs
+      }
+      return breadcrumbMap[this.activeMenu] || this.breadcrumbs
     }
   },
   async mounted() {
