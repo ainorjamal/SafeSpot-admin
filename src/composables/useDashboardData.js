@@ -1,5 +1,5 @@
 // composables/useDashboardData.js
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 export function useDashboardData() {
   const drawer = ref(true)
@@ -17,14 +17,51 @@ export function useDashboardData() {
     { title: 'Settings', icon: 'mdi-cog', value: 'settings' }
   ]
 
-  const breadcrumbs = [
-    { title: 'Admin', disabled: false },
-    { title: 'Dashboard', disabled: true }
-  ]
+  const breadcrumbs = computed(() => {
+    const breadcrumbMap = {
+      dashboard: [
+        { title: 'Home', disabled: false },
+        { title: 'Dashboard', disabled: true }
+      ],
+      users: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'User Management', disabled: true }
+      ],
+      map: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'Safety Map', disabled: true }
+      ],
+      analytics: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'Analytics', disabled: true }
+      ],
+      reports: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'Reports', disabled: true }
+      ],
+      settings: [
+        { title: 'Dashboard', disabled: false },
+        { title: 'Settings', disabled: true }
+      ]
+    }
+    return breadcrumbMap[activeMenu.value] || breadcrumbMap.dashboard
+  })
 
   const currentPageTitle = computed(() => {
-    const active = menuItems.find(item => item.value === activeMenu.value)
-    return active ? active.title : 'Dashboard'
+    const pageTitleMap = {
+      dashboard: 'Dashboard',
+      users: 'User Management',
+      map: 'Safety Map',
+      analytics: 'Analytics',
+      reports: 'Reports',
+      settings: 'Settings'
+    }
+    return pageTitleMap[activeMenu.value] || 'Dashboard'
+  })
+
+  // Watch for menu changes and update page title
+  watch(activeMenu, (newMenu) => {
+    console.log('Active menu changed to:', newMenu)
   })
 
   return {
