@@ -65,26 +65,7 @@
       <UserManagement v-if="activeMenu === 'users'" />
 
       <!-- Analytics Content (activeMenu === 'analytics') -->
-      <v-container v-if="activeMenu === 'analytics'" fluid class="content-container">
-        <div class="breadcrumb-section mb-6">
-          <v-breadcrumbs :items="analyticsBreadcrumbs" class="custom-breadcrumb pa-0">
-            <template v-slot:divider>
-              <v-icon size="16" color="#666">mdi-chevron-right</v-icon>
-            </template>
-          </v-breadcrumbs>
-        </div>
-        <div class="welcome-header">
-          <div class="welcome-content">
-            <div class="welcome-badge">
-              <v-icon size="32" color="#FF6B35">mdi-chart-line</v-icon>
-            </div>
-            <div class="welcome-text-content">
-              <h1 class="welcome-title">Analytics</h1>
-              <p class="welcome-subtitle">View detailed analytics and insights</p>
-            </div>
-          </div>
-        </div>
-      </v-container>
+      <Analytics v-if="activeMenu === 'analytics'" />
 
       <!-- Reports Content (activeMenu === 'reports') -->
       <v-container v-if="activeMenu === 'reports'" fluid class="content-container">
@@ -160,6 +141,7 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import DashboardBackground from '@/components/dashboard/DashboardBackground.vue'
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar.vue'
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar.vue'
@@ -168,10 +150,10 @@ import StatisticsCards from '@/components/dashboard/StatisticsCards.vue'
 import SystemStatusPanel from '@/components/dashboard/SystemStatusPanel.vue'
 import QuickActionsPanel from '@/components/dashboard/QuickActionsPanel.vue'
 import ActivityFeed from '@/components/dashboard/ActivityFeed.vue'
+import Analytics from '@/components/dashboard/Analytics.vue'
 import LogoutDialog from '@/components/dashboard/LogoutDialog.vue'
 import SafetyMap from '@/components/dashboard/SafetyMap.vue'
 import UserManagement from '@/components/dashboard/UserManagement.vue'
-
 import { useDashboardData } from '@/composables/useDashboardData'
 import { useUserStats } from '@/composables/useUserStats'
 import { useAuth } from '@/composables/useAuth'
@@ -187,6 +169,7 @@ export default {
     SystemStatusPanel,
     QuickActionsPanel,
     ActivityFeed,
+    Analytics,
     LogoutDialog,
     SafetyMap,
     UserManagement
