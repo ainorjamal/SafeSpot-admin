@@ -54,8 +54,6 @@
               v-show="showContent"
               :recent-activities="recentActivities"
             />
-
-            <SystemInfoCard v-show="showContent" />
           </v-col>
         </v-row>
       </v-container>
@@ -170,7 +168,6 @@ import StatisticsCards from '@/components/dashboard/StatisticsCards.vue'
 import SystemStatusPanel from '@/components/dashboard/SystemStatusPanel.vue'
 import QuickActionsPanel from '@/components/dashboard/QuickActionsPanel.vue'
 import ActivityFeed from '@/components/dashboard/ActivityFeed.vue'
-import SystemInfoCard from '@/components/dashboard/SystemInfoCard.vue'
 import LogoutDialog from '@/components/dashboard/LogoutDialog.vue'
 import SafetyMap from '@/components/dashboard/SafetyMap.vue'
 import UserManagement from '@/components/dashboard/UserManagement.vue'
@@ -190,7 +187,6 @@ export default {
     SystemStatusPanel,
     QuickActionsPanel,
     ActivityFeed,
-    SystemInfoCard,
     LogoutDialog,
     SafetyMap,
     UserManagement
