@@ -64,26 +64,7 @@
       <SafetyMap v-if="activeMenu === 'map'" />
 
       <!-- User Management Content (activeMenu === 'users') -->
-      <v-container v-if="activeMenu === 'users'" fluid class="content-container">
-        <div class="breadcrumb-section mb-6">
-          <v-breadcrumbs :items="usersBreadcrumbs" class="custom-breadcrumb pa-0">
-            <template v-slot:divider>
-              <v-icon size="16" color="#666">mdi-chevron-right</v-icon>
-            </template>
-          </v-breadcrumbs>
-        </div>
-        <div class="welcome-header">
-          <div class="welcome-content">
-            <div class="welcome-badge">
-              <v-icon size="32" color="#FF6B35">mdi-account-multiple</v-icon>
-            </div>
-            <div class="welcome-text-content">
-              <h1 class="welcome-title">User Management</h1>
-              <p class="welcome-subtitle">Manage all users and their permissions</p>
-            </div>
-          </div>
-        </div>
-      </v-container>
+      <UserManagement v-if="activeMenu === 'users'" />
 
       <!-- Analytics Content (activeMenu === 'analytics') -->
       <v-container v-if="activeMenu === 'analytics'" fluid class="content-container">
@@ -192,6 +173,7 @@ import ActivityFeed from '@/components/dashboard/ActivityFeed.vue'
 import SystemInfoCard from '@/components/dashboard/SystemInfoCard.vue'
 import LogoutDialog from '@/components/dashboard/LogoutDialog.vue'
 import SafetyMap from '@/components/dashboard/SafetyMap.vue'
+import UserManagement from '@/components/dashboard/UserManagement.vue'
 
 import { useDashboardData } from '@/composables/useDashboardData'
 import { useUserStats } from '@/composables/useUserStats'
@@ -210,7 +192,8 @@ export default {
     ActivityFeed,
     SystemInfoCard,
     LogoutDialog,
-    SafetyMap
+    SafetyMap,
+    UserManagement
   },
   setup() {
     const {
