@@ -21,28 +21,6 @@
 
     <v-spacer></v-spacer>
 
-    <!-- Search Bar -->
-    <div class="search-container">
-      <v-text-field
-        :model-value="searchQuery"
-        @update:model-value="$emit('update:searchQuery', $event)"
-        density="compact"
-        variant="solo"
-        placeholder="Search..."
-        prepend-inner-icon="mdi-magnify"
-        single-line
-        hide-details
-        class="search-field"
-      ></v-text-field>
-    </div>
-
-    <!-- Notifications -->
-    <v-btn icon class="nav-action-btn" variant="text">
-      <v-badge color="#FF6B35" content="3" offset-x="-2" offset-y="2">
-        <v-icon color="#fff">mdi-bell</v-icon>
-      </v-badge>
-    </v-btn>
-
     <!-- User Menu -->
     <v-menu offset-y>
       <template v-slot:activator="{ props }">
@@ -114,34 +92,6 @@ export default {
   color: #fff;
 }
 
-.search-container {
-  max-width: 400px;
-  margin: 0 24px;
-}
-
-.search-field {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border-radius: 12px;
-}
-
-.search-field :deep(.v-field) {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.search-field :deep(.v-field__input) {
-  color: #fff;
-  padding: 8px 16px;
-}
-
-.search-field :deep(.v-field__input)::placeholder {
-  color: #666;
-}
-
-.nav-action-btn {
-  margin: 0 8px;
-}
-
 .user-profile {
   display: flex;
   align-items: center;
@@ -201,10 +151,6 @@ export default {
 }
 
 @media (max-width: 960px) {
-  .search-container {
-    display: none;
-  }
-  
   .user-details {
     display: none;
   }
