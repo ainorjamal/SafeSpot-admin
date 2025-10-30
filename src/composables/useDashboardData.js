@@ -12,9 +12,7 @@ export function useDashboardData() {
     { title: 'Dashboard', icon: 'mdi-view-dashboard', value: 'dashboard' },
     { title: 'User Management', icon: 'mdi-account-multiple', value: 'users' },
     { title: 'Safety Map', icon: 'mdi-map-marker', value: 'map' },
-    { title: 'Analytics', icon: 'mdi-chart-line', value: 'analytics' },
-    { title: 'Reports', icon: 'mdi-file-chart', value: 'reports' },
-    { title: 'Settings', icon: 'mdi-cog', value: 'settings' }
+    { title: 'Analytics', icon: 'mdi-chart-line', value: 'analytics' }
   ]
 
   const breadcrumbs = computed(() => {
@@ -34,14 +32,6 @@ export function useDashboardData() {
       analytics: [
         { title: 'Dashboard', disabled: false },
         { title: 'Analytics', disabled: true }
-      ],
-      reports: [
-        { title: 'Dashboard', disabled: false },
-        { title: 'Reports', disabled: true }
-      ],
-      settings: [
-        { title: 'Dashboard', disabled: false },
-        { title: 'Settings', disabled: true }
       ]
     }
     return breadcrumbMap[activeMenu.value] || breadcrumbMap.dashboard
@@ -52,9 +42,7 @@ export function useDashboardData() {
       dashboard: 'Dashboard',
       users: 'User Management',
       map: 'Safety Map',
-      analytics: 'Analytics',
-      reports: 'Reports',
-      settings: 'Settings'
+      analytics: 'Analytics'
     }
     return pageTitleMap[activeMenu.value] || 'Dashboard'
   })
